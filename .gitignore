@@ -1,0 +1,25 @@
+# === Node.js / React frontend ===
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.DS_Store
+
+# === Java / Maven backend ===
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/.env
+
+# === IDEs and system files ===
+.idea/
+.vscode/
+*.iml
+*.swp
+.DS_Store
+
+# === Logs, temp ===
+*.log
+*.tmp
+*.bak
+*.old
