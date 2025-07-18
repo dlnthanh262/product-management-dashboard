@@ -54,5 +54,5 @@ npm install
 npm run dev
 
 # Setup backend
-cd ../backend
-./mvnw spring-boot:run
+cd backend
+mvn spring-boot:run
