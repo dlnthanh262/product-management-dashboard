@@ -26,11 +26,20 @@ A full-stack web app for managing products, built with ReactJS (frontend) and Sp
 
 ## Project Structure
 
-<pre><code>project-root/ 
+<pre><code>product-management-dashboard/ 
 ├── README.md 
-├── backend/ 
-├── docs/ 
-└── frontend/ </code></pre>
+├── backend/ # Spring Boot API
+├── frontend/ # React app 
+└── docs/ </code></pre>
+
+## Status
+ Product CRUD
+
+ Auth with JWT
+
+ Charts and dashboard
+
+ Deployment
 
 ## Getting Started
 
