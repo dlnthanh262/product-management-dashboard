@@ -1,20 +1,28 @@
 package com.dashboard.model;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+@RequiredArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity
+@Table(name = "products")
 public class Product {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true)
+    private Long id;
+
+    @NonNull
+    @Column(name = "name", nullable = false)
     private String name;
-    private int quantity;
-    private double price;
 
-    public Product(int id, String name, int quantity, double price) {
-        this.id = id;
-        this.name = name;
-        this.quantity = quantity;
-        this.price = price;
-    }
+    @NonNull
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
 
-    public int getId() { return id; }
-    public String getName() { return name; }
-    public int getQuantity() { return quantity; }
-    public double getPrice() { return price; }
+    @NonNull
+    @Column(name = "price", nullable = false)
+    private Double price;
 }
