@@ -19,6 +19,10 @@ public class Product {
     private String name;
 
     @NonNull
+    @Column(name = "brand", nullable = false)
+    private String brand;
+
+    @NonNull
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
