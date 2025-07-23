@@ -1,6 +1,6 @@
 # Product Management Dashboard
 
-A full-stack web app to manage products and users — built with **ReactJS** for the frontend and **Spring Boot** for the backend.
+A full-stack web app to manage products — built with **ReactJS** for the frontend and **Spring Boot** for the backend.
 
 ---
 
@@ -25,6 +25,13 @@ A full-stack web app to manage products and users — built with **ReactJS** for
 ## 🧩 System Architecture
 
 ```mermaid
+flowchart LR
+  User[User]
+  UI[ReactJS UI]
+  Axios[Axios]
+  API[Spring Boot REST API]
+  DB[(PostgreSQL)]
+
   User --> UI
   UI --> Axios
   Axios --> API
