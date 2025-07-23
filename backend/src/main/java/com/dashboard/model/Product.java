@@ -2,31 +2,32 @@ package com.dashboard.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.validation.constraints.NotNull;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(unique = true)
     private Long id;
 
-    @NonNull
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
-    @NonNull
-    @Column(name = "brand", nullable = false)
-    private String brand;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", nullable = false)
+    private Brand brand;
 
-    @NonNull
+    @NotNull
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @NonNull
+    @NotNull
     @Column(name = "price", nullable = false)
     private Double price;
 }
