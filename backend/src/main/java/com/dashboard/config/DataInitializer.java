@@ -7,6 +7,8 @@ import com.dashboard.repository.ProductRepository;
 import com.dashboard.util.CsvUtils;
 import com.dashboard.util.EntityUtils;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -47,8 +49,8 @@ public class DataInitializer implements CommandLineRunner {
                 }
 
                 String name = row[0].trim();
-                if (CsvUtils.isBlankOrNullString(name)) {
-                    log.warn("Invalid brand name at row {}", rowIndex, Arrays.toString(row));
+                if (StringUtils.isBlank(name)) {
+                    log.warn("Invalid brand name '{}'at row {}", name, rowIndex);
                     continue;
                 }
 
@@ -56,12 +58,12 @@ public class DataInitializer implements CommandLineRunner {
                 brand.setName(name);
 
                 String country = row[1].trim();
-                brand.setCountry(CsvUtils.isBlankOrNullString(country) ? null : country);
+                brand.setCountry(StringUtils.isBlank(country) ? null : country);
 
                 String foundedYearString = row[2].trim();
-                if (CsvUtils.isBlankOrNullString(foundedYearString)) {
+                if (StringUtils.isBlank(foundedYearString)) {
                     brand.setFounded_year(null);
-                } else if (CsvUtils.isIntegerString(foundedYearString)) {
+                } else if (StringUtils.isNumeric(foundedYearString)) {
                     brand.setFounded_year(Integer.valueOf(foundedYearString));
                 } else {
                     log.warn("Invalid brand founded year {} at row {}", foundedYearString, rowIndex);
@@ -69,10 +71,10 @@ public class DataInitializer implements CommandLineRunner {
                 }
 
                 String website = row[3].trim();
-                brand.setWebsite(CsvUtils.isBlankOrNullString(website) ? null : website);
+                brand.setWebsite(StringUtils.isBlank(website) ? null : website);
 
                 String description = row[4].trim();
-                brand.setDescription(CsvUtils.isBlankOrNullString(description) ? null : description);
+                brand.setDescription(StringUtils.isBlank(description) ? null : description);
 
                 brands.add(brand);
             }
@@ -95,21 +97,22 @@ public class DataInitializer implements CommandLineRunner {
                 rowIndex++;
                 int numFields = EntityUtils.getNonIdFieldCount(Product.class);
                 if (row.length < numFields) {
-                    log.warn("Invalid product column number: {} instead of {} at row {}", row.length, numFields, rowIndex);
+                    log.warn("Invalid product column number: {} instead of {} at row {}. Full row: {}", row.length, numFields, rowIndex, Arrays.toString(row));
                     continue;
                 }
 
                 String name = row[0].trim();
-                if (CsvUtils.isBlankOrNullString(name)) {
-                    log.warn("Invalid product name at row {}: {}", rowIndex, Arrays.toString(row));
+                if (StringUtils.isBlank(name)) {
+                    log.warn("Invalid product name '{}' at row {}", name, rowIndex);
                     continue;
                 }
 
                 String brandName = row[1].trim();
-                if (CsvUtils.isBlankOrNullString(brandName)) {
-                    log.warn("Invalid brand name for product at row {}: {}", rowIndex, Arrays.toString(row));
+                if (StringUtils.isBlank(brandName)) {
+                    log.warn("Invalid brand name '{}' at row {}", brandName, rowIndex);
                     continue;
                 }
+
                 Optional<Brand> optionalBrand = brandRepository.findByName(brandName);
                 if (optionalBrand.isEmpty()) {
                     log.warn("Brand not found for name '{}' at row {}", brandName, rowIndex);
@@ -117,13 +120,13 @@ public class DataInitializer implements CommandLineRunner {
                 }
 
                 String quantityString = row[2].trim();
-                if (!CsvUtils.isIntegerString(quantityString)) {
+                if (!StringUtils.isNumeric(quantityString)) {
                     log.warn("Invalid quantity '{}' at row {}", quantityString, rowIndex);
                     continue;
                 }
 
                 String priceString = row[3].trim();
-                if (!CsvUtils.isNumericString(priceString)) {
+                if (!NumberUtils.isCreatable(priceString)) {
                     log.warn("Invalid price '{}' at row {}", priceString, rowIndex);
                     continue;
                 }

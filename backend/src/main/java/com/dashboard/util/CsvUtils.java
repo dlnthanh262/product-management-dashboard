@@ -32,28 +32,4 @@ public class CsvUtils {
 
         return records;
     }
-
-    public static boolean isBlankOrNullString(String value) {
-        return value == null || value.trim().isEmpty() || value.equalsIgnoreCase("null");
-    }
-
-    public static boolean isIntegerString(String value) {
-        if (value == null || value.trim().isEmpty()) return false;
-        try {
-            Integer.parseInt(value.trim());
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
-    public static boolean isNumericString(String value) {
-        if (value == null || value.trim().isEmpty()) return false;
-        try {
-            Double.parseDouble(value.trim());
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 }
