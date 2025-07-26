@@ -6,8 +6,10 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
+@Builder
 @Table(name = "brand")
 public class Brand {
     @Id
@@ -22,7 +24,7 @@ public class Brand {
     private String country;
 
     @Column(name = "founded_year")
-    private Integer founded_year;
+    private Integer foundedYear;
 
     @Column(name = "website")
     private String website;

@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
+@Builder
 @Table(name = "product")
 public class Product {
     @Id

@@ -1,27 +1,27 @@
 package com.dashboard.parser;
 
 import com.dashboard.model.Brand;
-import com.dashboard.util.EntityUtils;
+import jakarta.validation.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 
 public class BrandCsvParser implements CsvEntityParser<Brand> {
     @Override
     public Brand parse(String[] row) throws Exception {
-        var numFields = EntityUtils.getNonIdFieldCount(Brand.class);
-        if (row.length < numFields) {
-            throw new Exception(String.format("Invalid brand column number: %d instead of %d", row.length, numFields));
+        var expectedColumns = 5;
+        if (row.length < expectedColumns) {
+            throw new ValidationException(String.format("Invalid brand column number: %d instead of %d", row.length, expectedColumns));
         }
 
         var name = row[0].trim();
         if (StringUtils.isBlank(name)) {
-            throw new Exception(String.format("Invalid brand name: %s", name));
+            throw new ValidationException("Brand name cannot be blank");
         }
 
         var foundedYearString = row[2].trim();
         if (StringUtils.isBlank(foundedYearString)) {
             foundedYearString = null;
         } else if (!StringUtils.isNumeric(foundedYearString)) {
-            throw new Exception(String.format("Invalid brand founded year %s", foundedYearString));
+            throw new ValidationException(String.format("Invalid brand founded year %s", foundedYearString));
         }
         var foundedYear = foundedYearString == null ? null : Integer.parseInt(foundedYearString);
 
@@ -34,13 +34,12 @@ public class BrandCsvParser implements CsvEntityParser<Brand> {
         var description = row[4].trim();
         description = StringUtils.isBlank(description) ? null : description;
 
-        var brand = new Brand();
-        brand.setName(name);
-        brand.setCountry(country);
-        brand.setFounded_year(foundedYear);
-        brand.setWebsite(website);
-        brand.setDescription(description);
-
-        return brand;
+        return Brand.builder()
+            .name(name)
+            .country(country)
+            .foundedYear(foundedYear)
+            .website(website)
+            .description(description)
+            .build();
     }
 }
