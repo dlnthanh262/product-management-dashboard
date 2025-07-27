@@ -20,7 +20,7 @@ public class ProductCsvParser implements CsvEntityParser<Product>{
     public Product parse(String[] row) throws Exception {
         var expectedColumns = 4;
         if (row.length < expectedColumns) {
-            throw new ValidationException(String.format("Invalid product column number: %d instead of %d", row.length, expectedColumns));
+            throw new ValidationException(String.format("Invalid product column number. Actual: %d, expected: %d", row.length, expectedColumns));
         }
 
         var name = row[0].trim();
@@ -40,7 +40,7 @@ public class ProductCsvParser implements CsvEntityParser<Product>{
 
         var quantityString = row[2].trim();
         if (!StringUtils.isNumeric(quantityString)) {
-            throw new ValidationException("Invalid quantity: " + quantityString);
+            throw new ValidationException(String.format("Invalid quantity '%s'", quantityString));
         }
         var quantity = Integer.parseInt(quantityString);
 
@@ -49,7 +49,7 @@ public class ProductCsvParser implements CsvEntityParser<Product>{
         try {
             price = Double.parseDouble(priceString);
         } catch (NumberFormatException e) {
-            throw new ValidationException("Invalid price: " + priceString);
+            throw new ValidationException(String.format("Invalid price '%s'", priceString));
         }
 
         return Product.builder()

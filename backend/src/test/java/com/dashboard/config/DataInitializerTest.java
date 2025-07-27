@@ -25,12 +25,11 @@ import static org.mockito.Mockito.*;
 class DataInitializerTest {
 
     @Mock
-    BrandRepository brandRepository;
+    private BrandRepository brandRepository;
     @Mock
-    ProductRepository productRepository;
-
+    private ProductRepository productRepository;
     private MockedStatic<CsvUtils> csvUtilsMock;
-    DataInitializer dataInitializer;
+    private DataInitializer dataInitializer;
 
     @BeforeEach
     void setUp() {

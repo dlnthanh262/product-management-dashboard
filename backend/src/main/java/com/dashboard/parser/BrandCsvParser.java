@@ -9,7 +9,7 @@ public class BrandCsvParser implements CsvEntityParser<Brand> {
     public Brand parse(String[] row) throws Exception {
         var expectedColumns = 5;
         if (row.length < expectedColumns) {
-            throw new ValidationException(String.format("Invalid brand column number: %d instead of %d", row.length, expectedColumns));
+            throw new ValidationException(String.format("Invalid brand column number. Actual: %d, expected: %d", row.length, expectedColumns));
         }
 
         var name = row[0].trim();
@@ -21,7 +21,7 @@ public class BrandCsvParser implements CsvEntityParser<Brand> {
         if (StringUtils.isBlank(foundedYearString)) {
             foundedYearString = null;
         } else if (!StringUtils.isNumeric(foundedYearString)) {
-            throw new ValidationException(String.format("Invalid brand founded year %s", foundedYearString));
+            throw new ValidationException(String.format("Invalid brand founded year '%s'", foundedYearString));
         }
         var foundedYear = foundedYearString == null ? null : Integer.parseInt(foundedYearString);
 
