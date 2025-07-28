@@ -1,9 +1,11 @@
 package com.dashboard.parser;
 
+import com.dashboard.exception.InvalidFormatException;
+import com.dashboard.exception.NotFoundException;
+import com.dashboard.exception.ValidationException;
 import com.dashboard.model.Brand;
 import com.dashboard.model.Product;
 import com.dashboard.repository.BrandRepository;
-import jakarta.validation.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Optional;
@@ -17,10 +19,10 @@ public class ProductCsvParser implements CsvEntityParser<Product>{
     }
 
     @Override
-    public Product parse(String[] row) throws Exception {
+    public Product parse(String[] row) {
         var expectedColumns = 4;
         if (row.length < expectedColumns) {
-            throw new ValidationException(String.format("Invalid product column number. Actual: %d, expected: %d", row.length, expectedColumns));
+            throw new InvalidFormatException(String.format("Invalid product column number. Actual: %d, expected: %d", row.length, expectedColumns));
         }
 
         var name = row[0].trim();
@@ -35,12 +37,12 @@ public class ProductCsvParser implements CsvEntityParser<Product>{
 
         Optional<Brand> optionalBrand = brandRepository.findByName(brandName);
         if (optionalBrand.isEmpty()) {
-            throw new ValidationException(String.format("Brand not found for name '%s'", brandName));
+            throw new NotFoundException(String.format("Brand not found for name '%s'", brandName));
         }
 
         var quantityString = row[2].trim();
         if (!StringUtils.isNumeric(quantityString)) {
-            throw new ValidationException(String.format("Invalid quantity '%s'", quantityString));
+            throw new InvalidFormatException(String.format("Invalid quantity '%s'", quantityString));
         }
         var quantity = Integer.parseInt(quantityString);
 
@@ -49,7 +51,7 @@ public class ProductCsvParser implements CsvEntityParser<Product>{
         try {
             price = Double.parseDouble(priceString);
         } catch (NumberFormatException e) {
-            throw new ValidationException(String.format("Invalid price '%s'", priceString));
+            throw new InvalidFormatException(String.format("Invalid price '%s'", priceString));
         }
 
         return Product.builder()

@@ -1,5 +1,5 @@
 package com.dashboard.parser;
 
 public interface CsvEntityParser<T> {
-    T parse(String[] row) throws Exception;
+    T parse(String[] row);
 }

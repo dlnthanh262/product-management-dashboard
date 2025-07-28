@@ -1,15 +1,16 @@
 package com.dashboard.parser;
 
+import com.dashboard.exception.InvalidFormatException;
+import com.dashboard.exception.ValidationException;
 import com.dashboard.model.Brand;
-import jakarta.validation.ValidationException;
 import org.apache.commons.lang3.StringUtils;
 
 public class BrandCsvParser implements CsvEntityParser<Brand> {
     @Override
-    public Brand parse(String[] row) throws Exception {
+    public Brand parse(String[] row) {
         var expectedColumns = 5;
         if (row.length < expectedColumns) {
-            throw new ValidationException(String.format("Invalid brand column number. Actual: %d, expected: %d", row.length, expectedColumns));
+            throw new InvalidFormatException(String.format("Invalid brand column number. Actual: %d, expected: %d", row.length, expectedColumns));
         }
 
         var name = row[0].trim();
@@ -18,21 +19,17 @@ public class BrandCsvParser implements CsvEntityParser<Brand> {
         }
 
         var foundedYearString = row[2].trim();
-        if (StringUtils.isBlank(foundedYearString)) {
-            foundedYearString = null;
-        } else if (!StringUtils.isNumeric(foundedYearString)) {
-            throw new ValidationException(String.format("Invalid brand founded year '%s'", foundedYearString));
+        Integer foundedYear = null;
+        if (StringUtils.isNotBlank(foundedYearString)) {
+            if (!StringUtils.isNumeric(foundedYearString)) {
+                throw new InvalidFormatException(String.format("Invalid brand founded year '%s'", foundedYearString));
+            }
+            foundedYear = Integer.parseInt(foundedYearString);
         }
-        var foundedYear = foundedYearString == null ? null : Integer.parseInt(foundedYearString);
 
-        var country = row[1].trim();
-        country = StringUtils.isBlank(country) ? null : country;
-
-        var website = row[3].trim();
-        website = StringUtils.isBlank(website) ? null : website;
-
-        var description = row[4].trim();
-        description = StringUtils.isBlank(description) ? null : description;
+        var country = StringUtils.defaultIfBlank(row[1].trim(), null);
+        var website = StringUtils.defaultIfBlank(row[3].trim(), null);
+        var description = StringUtils.defaultIfBlank(row[4].trim(), null);
 
         return Brand.builder()
             .name(name)

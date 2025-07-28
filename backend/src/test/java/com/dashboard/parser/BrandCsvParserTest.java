@@ -1,7 +1,8 @@
 package com.dashboard.parser;
 
+import com.dashboard.exception.InvalidFormatException;
+import com.dashboard.exception.ValidationException;
 import com.dashboard.model.Brand;
-import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,11 +34,11 @@ class BrandCsvParserTest {
     }
 
     @Test
-    void givenRowMissingFields_whenParse_thenThrowsValidationException() {
+    void givenRowMissingFields_whenParse_thenThrowsInvalidFormatException() {
         String[] row = { "Dell", "USA", "1984" };
 
         assertThatThrownBy(() -> parser.parse(row))
-            .isInstanceOf(ValidationException.class)
+            .isInstanceOf(InvalidFormatException.class)
             .hasMessageContaining("Invalid brand column number");
     }
 
@@ -51,16 +52,16 @@ class BrandCsvParserTest {
     }
 
     @Test
-    void givenNonNumericFoundedYear_whenParse_thenThrowsValidationException() {
+    void givenNonNumericFoundedYear_whenParse_thenThrowsInvalidFormatException() {
         String[] row = { "Dell", "USA", "Nineteen84", "url", "desc" };
 
         assertThatThrownBy(() -> parser.parse(row))
-            .isInstanceOf(ValidationException.class)
+            .isInstanceOf(InvalidFormatException.class)
             .hasMessageContaining("Invalid brand founded year");
     }
 
     @Test
-    void givenBlankOptionalFields_whenParse_thenAssignsNull() throws Exception {
+    void givenBlankOptionalFields_whenParse_thenAssignsNull() {
         String[] row = { "Dell", "  ", "", "  ", "   " };
 
         Brand result = parser.parse(row);

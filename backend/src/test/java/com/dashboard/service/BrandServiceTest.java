@@ -2,6 +2,7 @@ package com.dashboard.service;
 
 import com.dashboard.model.Brand;
 import com.dashboard.repository.BrandRepository;
+import com.dashboard.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,11 +19,13 @@ import static org.mockito.Mockito.when;
 class BrandServiceTest {
     @Mock
     private BrandRepository brandRepository;
+    @Mock
+    private ProductRepository productRepository;
     private BrandService brandService;
 
     @BeforeEach
     void setUp() {
-        brandService = new BrandService(brandRepository);
+        brandService = new BrandService(brandRepository, productRepository);
     }
 
     @Test

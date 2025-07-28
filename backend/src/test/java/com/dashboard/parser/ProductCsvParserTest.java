@@ -1,8 +1,10 @@
 package com.dashboard.parser;
 
+import com.dashboard.exception.InvalidFormatException;
+import com.dashboard.exception.NotFoundException;
+import com.dashboard.exception.ValidationException;
 import com.dashboard.model.Brand;
 import com.dashboard.repository.BrandRepository;
-import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -25,7 +27,7 @@ class ProductCsvParserTest {
     }
 
     @Test
-    void givenValidRow_whenParse_thenReturnProduct() throws Exception {
+    void givenValidRow_whenParse_thenReturnProduct() {
         String[] row = { "Laptop", "Dell", "10", "999.99" };
         var brand = Brand.builder().name("Dell").build();
         when(brandRepository.findByName("Dell")).thenReturn(Optional.of(brand));
@@ -39,11 +41,11 @@ class ProductCsvParserTest {
     }
 
     @Test
-    void givenRowMissingPrice_whenParse_thenThrowValidationException() {
+    void givenRowMissingPrice_whenParse_thenThrowInvalidFormatException() {
         String[] row = { "Laptop", "Dell", "10" };
 
         assertThatThrownBy(() -> parser.parse(row))
-            .isInstanceOf(ValidationException.class)
+            .isInstanceOf(InvalidFormatException.class)
             .hasMessageContaining("Invalid product column number");
     }
 
@@ -66,32 +68,32 @@ class ProductCsvParserTest {
     }
 
     @Test
-    void givenNotFoundBrand_whenParse_thenThrowValidationException() {
+    void givenNotFoundBrand_whenParse_thenThrowNotFoundException() {
         String[] row = { "Laptop", "UnknownBrand", "10", "999.99" };
         when(brandRepository.findByName("UnknownBrand")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> parser.parse(row))
-            .isInstanceOf(ValidationException.class)
+            .isInstanceOf(NotFoundException.class)
             .hasMessageContaining("Brand not found for name");
     }
 
     @Test
-    void givenNonNumericQuantity_whenParse_thenThrowValidationException() {
+    void givenNonNumericQuantity_whenParse_thenThrowInvalidFormatException() {
         String[] row = { "Laptop", "Dell", "abc", "999.99" };
         when(brandRepository.findByName("Dell")).thenReturn(Optional.of(new Brand()));
 
         assertThatThrownBy(() -> parser.parse(row))
-            .isInstanceOf(ValidationException.class)
+            .isInstanceOf(InvalidFormatException.class)
             .hasMessageContaining("Invalid quantity");
     }
 
     @Test
-    void givenInvalidPrice_whenParse_thenThrowValidationException() {
+    void givenInvalidPrice_whenParse_thenThrowInvalidFormatException() {
         String[] row = { "Laptop", "Dell", "10", "priceX" };
         when(brandRepository.findByName("Dell")).thenReturn(Optional.of(new Brand()));
 
         assertThatThrownBy(() -> parser.parse(row))
-            .isInstanceOf(ValidationException.class)
+            .isInstanceOf(InvalidFormatException.class)
             .hasMessageContaining("Invalid price");
     }
 }
