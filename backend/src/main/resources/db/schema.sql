@@ -4,7 +4,9 @@ CREATE TABLE IF NOT EXISTS brand (
     country VARCHAR(255),
     founded_year INT,
     website VARCHAR(255),
-    description TEXT
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
 CREATE TABLE IF NOT EXISTS product (
@@ -13,6 +15,8 @@ CREATE TABLE IF NOT EXISTS product (
     brand_id INT NOT NULL,
     quantity INT NOT NULL,
     price NUMERIC(8,2)  NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_brand FOREIGN KEY (brand_id) REFERENCES brand(id)
     );
 
