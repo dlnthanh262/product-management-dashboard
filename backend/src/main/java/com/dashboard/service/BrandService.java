@@ -1,7 +1,6 @@
 package com.dashboard.service;
 
 import com.dashboard.exception.ConflictException;
-import com.dashboard.exception.InvalidFormatException;
 import com.dashboard.exception.NotFoundException;
 import com.dashboard.exception.ValidationException;
 import com.dashboard.model.Brand;
@@ -71,7 +70,7 @@ public class BrandService {
         var inputBrandId = inputBrand.getId();
         if (inputBrandId == null || inputBrandId < 0) {
             log.warn("Invalid brand ID: {}", inputBrandId);
-            throw new InvalidFormatException("Invalid brand ID: " + inputBrandId);
+            throw new ValidationException("Invalid brand ID: " + inputBrandId);
         }
 
         var optionalExistingBrand = brandRepository.findById(inputBrandId);
@@ -81,11 +80,6 @@ public class BrandService {
         }
 
         var inputBrandName = inputBrand.getName();
-        if (inputBrandName == null || inputBrandName.trim().isBlank()) {
-            log.warn("Empty brand name provided for update");
-            throw new ValidationException("Brand name must not be empty");
-        }
-
         var optionalBrandByName = brandRepository.findByName(inputBrandName);
         if (optionalBrandByName.isPresent() && !optionalBrandByName.get().getId().equals(inputBrandId)) {
             log.warn("Conflict: Brand name '{}' already exists", inputBrandName);
@@ -93,7 +87,7 @@ public class BrandService {
         }
 
         var brandToUpdate = optionalExistingBrand.get();
-        brandToUpdate.setName(inputBrandName);
+        brandToUpdate.setName(inputBrand.getName());
         brandToUpdate.setCountry(inputBrand.getCountry());
         brandToUpdate.setFoundedYear(inputBrand.getFoundedYear());
         brandToUpdate.setWebsite(inputBrand.getWebsite());
