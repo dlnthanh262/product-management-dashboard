@@ -20,7 +20,6 @@ public class Brand {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Brand name is required")
     @Column(name = "name", unique = true, nullable = false)
     private String name;
 

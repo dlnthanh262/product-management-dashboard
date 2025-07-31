@@ -1,8 +1,9 @@
 package com.dashboard.controller;
 
+import com.dashboard.dto.BrandRequestDTO;
 import com.dashboard.model.Brand;
 import com.dashboard.service.BrandService;
-import jakarta.validation.Valid;
+import jakarta.validation.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,39 +20,40 @@ public class BrandController {
 
     // GET /api/brands?page=0&size=10
     @GetMapping
-    public Page<Brand> getAllBrands(Pageable pageable) {
+    public Page<Brand> getAll(Pageable pageable) {
         return brandService.getAll(pageable);
     }
 
     // GET /api/brands/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<Brand> getBrandById(@PathVariable Long id) {
-        Brand brand = brandService.getOneById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(brand);
+    public ResponseEntity<Brand> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(brandService.getOneById(id));
     }
 
     // POST /api/brands
     @PostMapping
-    public ResponseEntity<Object> createBrand(@Valid @RequestBody Brand inputBrand) {
-        Brand brand = brandService.create(inputBrand);
-        return ResponseEntity.status(HttpStatus.CREATED).body(brand);
+    public ResponseEntity<Object> create(@Valid @RequestBody BrandRequestDTO request) {
+        var brand = Brand.builder()
+            .name(request.getName())
+            .country(request.getCountry())
+            .foundedYear(request.getFoundedYear())
+            .website(request.getWebsite())
+            .description(request.getDescription())
+            .build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(brandService.create(brand));
     }
 
     // PUT /api/brands/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Brand> updateBrand(
-        @PathVariable Long id,
-        @Valid @RequestBody Brand inputBrand
-    ) {
+    public ResponseEntity<Brand> update(@PathVariable Long id, @RequestBody Brand inputBrand) {
         inputBrand.setId(id);
-        Brand updatedBrand = brandService.update(inputBrand);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedBrand);
+        return ResponseEntity.ok(brandService.update(inputBrand));
     }
 
     // DELETE /api/brands/{id}
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> deleteBrand(@PathVariable Long id) {
+    public ResponseEntity<Brand> delete(@PathVariable Long id) {
         brandService.delete(id);
-        return ResponseEntity.status(HttpStatus.OK).body(id);
+        return ResponseEntity.noContent().build();
     }
 }
