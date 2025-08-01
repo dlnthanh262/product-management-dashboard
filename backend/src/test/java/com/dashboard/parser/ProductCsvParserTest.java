@@ -30,7 +30,7 @@ class ProductCsvParserTest {
     void givenValidRow_whenParse_thenReturnProduct() {
         String[] row = { "Laptop", "Dell", "10", "999.99" };
         var brand = Brand.builder().name("Dell").build();
-        when(brandRepository.findByName("Dell")).thenReturn(Optional.of(brand));
+        when(brandRepository.findByNameAndDeleted("Dell", false)).thenReturn(Optional.of(brand));
 
         var result = parser.parse(row);
 
@@ -70,7 +70,7 @@ class ProductCsvParserTest {
     @Test
     void givenNotFoundBrand_whenParse_thenThrowNotFoundException() {
         String[] row = { "Laptop", "UnknownBrand", "10", "999.99" };
-        when(brandRepository.findByName("UnknownBrand")).thenReturn(Optional.empty());
+        when(brandRepository.findByNameAndDeleted("UnknownBrand", false)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> parser.parse(row))
             .isInstanceOf(NotFoundException.class)
@@ -80,7 +80,7 @@ class ProductCsvParserTest {
     @Test
     void givenNonNumericQuantity_whenParse_thenThrowInvalidFormatException() {
         String[] row = { "Laptop", "Dell", "abc", "999.99" };
-        when(brandRepository.findByName("Dell")).thenReturn(Optional.of(new Brand()));
+        when(brandRepository.findByNameAndDeleted("Dell", false)).thenReturn(Optional.of(new Brand()));
 
         assertThatThrownBy(() -> parser.parse(row))
             .isInstanceOf(InvalidFormatException.class)
@@ -90,7 +90,7 @@ class ProductCsvParserTest {
     @Test
     void givenInvalidPrice_whenParse_thenThrowInvalidFormatException() {
         String[] row = { "Laptop", "Dell", "10", "priceX" };
-        when(brandRepository.findByName("Dell")).thenReturn(Optional.of(new Brand()));
+        when(brandRepository.findByNameAndDeleted("Dell", false)).thenReturn(Optional.of(new Brand()));
 
         assertThatThrownBy(() -> parser.parse(row))
             .isInstanceOf(InvalidFormatException.class)

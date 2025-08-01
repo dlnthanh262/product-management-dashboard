@@ -35,7 +35,7 @@ public class ProductCsvParser implements CsvEntityParser<Product>{
             throw new ValidationException("Brand name cannot be blank");
         }
 
-        Optional<Brand> optionalBrand = brandRepository.findByName(brandName);
+        Optional<Brand> optionalBrand = brandRepository.findByNameAndDeleted(brandName, false);
         if (optionalBrand.isEmpty()) {
             throw new NotFoundException(String.format("Brand not found for name '%s'", brandName));
         }

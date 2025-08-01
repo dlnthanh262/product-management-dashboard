@@ -1,7 +1,6 @@
 package com.dashboard.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
@@ -21,7 +20,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -45,4 +44,7 @@ public class Product {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean deleted;
 }

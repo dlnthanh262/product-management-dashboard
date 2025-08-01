@@ -1,6 +1,7 @@
 package com.dashboard.controller;
 
 import com.dashboard.dto.BrandRequestDTO;
+import com.dashboard.dto.BrandResponseDTO;
 import com.dashboard.model.Brand;
 import com.dashboard.service.BrandService;
 import jakarta.validation.*;
@@ -20,40 +21,32 @@ public class BrandController {
 
     // GET /api/brands?page=0&size=10
     @GetMapping
-    public Page<Brand> getAll(Pageable pageable) {
+    public Page<BrandResponseDTO> getAll(Pageable pageable) {
         return brandService.getAll(pageable);
     }
 
     // GET /api/brands/{id}
     @GetMapping("/{id}")
-    public ResponseEntity<Brand> getById(@PathVariable Long id) {
+    public ResponseEntity<BrandResponseDTO> getById(@PathVariable Long id) {
         return ResponseEntity.ok(brandService.getOneById(id));
     }
 
     // POST /api/brands
     @PostMapping
-    public ResponseEntity<Object> create(@Valid @RequestBody BrandRequestDTO request) {
-        var brand = Brand.builder()
-            .name(request.getName())
-            .country(request.getCountry())
-            .foundedYear(request.getFoundedYear())
-            .website(request.getWebsite())
-            .description(request.getDescription())
-            .build();
-        return ResponseEntity.status(HttpStatus.CREATED).body(brandService.create(brand));
+    public ResponseEntity<BrandResponseDTO> create(@Valid @RequestBody BrandRequestDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(brandService.create(request));
     }
 
     // PUT /api/brands/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Brand> update(@PathVariable Long id, @RequestBody Brand inputBrand) {
-        inputBrand.setId(id);
-        return ResponseEntity.ok(brandService.update(inputBrand));
+    public ResponseEntity<BrandResponseDTO> update(@PathVariable Long id, @Valid @RequestBody BrandRequestDTO request) {
+        return ResponseEntity.ok(brandService.update(id, request));
     }
 
     // DELETE /api/brands/{id}
     @DeleteMapping("/{id}")
     public ResponseEntity<Brand> delete(@PathVariable Long id) {
-        brandService.delete(id);
+        brandService.markAsDeleted(id);
         return ResponseEntity.noContent().build();
     }
 }

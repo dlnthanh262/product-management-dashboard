@@ -35,7 +35,7 @@ class BrandControllerIntegrationTest {
 
     @Test
     void givenValidRequest_whenGetAll_thenReturnListOfBrands() throws Exception {
-        var brand = Brand.builder().name(BRAND_NAME).build();
+        var brand = Brand.builder().name(BRAND_NAME).deleted(false).build();
         brandRepository.save(brand);
 
         mockMvc.perform(get("/api/brands"))
@@ -46,7 +46,7 @@ class BrandControllerIntegrationTest {
 
     @Test
     void givenValidRequest_whenGetById_thenReturnBrand() throws Exception {
-        var brand = brandRepository.save(Brand.builder().name(BRAND_NAME).build());
+        var brand = brandRepository.save(Brand.builder().name(BRAND_NAME).deleted(false).build());
         var id = brand.getId();
 
         mockMvc.perform(get("/api/brands/" + id))
@@ -81,7 +81,7 @@ class BrandControllerIntegrationTest {
 
     @Test
     public void givenValidRequest_whenUpdate_thenReturnUpdatedBrand() throws Exception {
-        var brand = brandRepository.save(Brand.builder().name(BRAND_NAME).build());
+        var brand = brandRepository.save(Brand.builder().name(BRAND_NAME).deleted(false).build());
 
         var nameToUpdate = "Brand To Update";
         String country = "USA";
@@ -108,12 +108,12 @@ class BrandControllerIntegrationTest {
 
     @Test
     public void givenValidRequest_whenDelete_thenDeleteSuccess() throws Exception {
-        var brand = brandRepository.save(Brand.builder().name(BRAND_NAME).build());
+        var brand = brandRepository.save(Brand.builder().name(BRAND_NAME).deleted(false).build());
 
         mockMvc.perform(delete("/api/brands/" + brand.getId()))
             .andExpect(status().isNoContent());
 
-        Assertions.assertFalse(brandRepository.findById(brand.getId()).isPresent());
+        Assertions.assertTrue(brandRepository.findById(brand.getId()).get().getDeleted());
     }
 
     @Test

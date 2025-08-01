@@ -60,9 +60,9 @@ class DataInitializerTest {
             .thenReturn(mockBrandRows);
         csvUtilsMock.when(() -> CsvUtils.readCsvFromResource("data/products.csv"))
             .thenReturn(mockProductRows);
-        when(brandRepository.findByName("Apple"))
+        when(brandRepository.findByNameAndDeleted("Apple", false))
             .thenReturn(Optional.of(Brand.builder().id(1L).name("Apple").build()));
-        when(brandRepository.findByName("HP"))
+        when(brandRepository.findByNameAndDeleted("HP", false))
             .thenReturn(Optional.of(Brand.builder().id(2L).name("HP").build()));
 
         dataInitializer.run();
