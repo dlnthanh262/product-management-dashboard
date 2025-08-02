@@ -21,9 +21,9 @@ public class BrandService {
     private final BrandRepository brandRepository;
     private final ProductRepository productRepository;
 
-    public Page<BrandResponseDTO> getAll(Pageable pageable) {
-        log.info("Fetching all brands with pagination: page {}, size {}", pageable.getPageNumber(), pageable.getPageSize());
-        return brandRepository.findByDeleted(false, pageable)
+    public Page<BrandResponseDTO> getAllByDeleted(boolean deleted, Pageable pageable) {
+        log.info("Fetching brands with deleted = {}. Page {}, size {}", deleted, pageable.getPageNumber(), pageable.getPageSize());
+        return brandRepository.findByDeleted(deleted, pageable)
             .map(this::mapToResponseDTO);
     }
 
@@ -126,12 +126,6 @@ public class BrandService {
 
         log.info("Brand deleted");
         brandRepository.setDeletedTrueById(id);
-    }
-
-    public Page<BrandResponseDTO> getAllByDeleted(boolean deleted, Pageable pageable) {
-        log.info("Fetching brands with deleted = {}. Page {}, size {}", deleted, pageable.getPageNumber(), pageable.getPageSize());
-        return brandRepository.findByDeleted(deleted, pageable)
-            .map(this::mapToResponseDTO);
     }
 
     private BrandResponseDTO mapToResponseDTO(Brand brand) {

@@ -19,10 +19,12 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    // GET /api/brands?page=0&size=10
+    // GET /api/brands?deleted=false&page=0&size=10
     @GetMapping
-    public Page<BrandResponseDTO> getAll(Pageable pageable) {
-        return brandService.getAll(pageable);
+    public Page<BrandResponseDTO> getAll(
+        @RequestParam(defaultValue = "false") boolean deleted,
+        Pageable pageable) {
+        return brandService.getAllByDeleted(deleted, pageable);
     }
 
     // GET /api/brands/{id}

@@ -59,6 +59,7 @@ public class ProductCsvParser implements CsvEntityParser<Product>{
             .brand(optionalBrand.get())
             .quantity(quantity)
             .price(price)
+            .deleted(false)
             .build();
     }
 }

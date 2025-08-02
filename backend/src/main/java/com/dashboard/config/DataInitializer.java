@@ -1,6 +1,5 @@
 package com.dashboard.config;
 
-import com.dashboard.model.Product;
 import com.dashboard.parser.BrandCsvParser;
 import com.dashboard.parser.CsvEntityParser;
 import com.dashboard.parser.ProductCsvParser;

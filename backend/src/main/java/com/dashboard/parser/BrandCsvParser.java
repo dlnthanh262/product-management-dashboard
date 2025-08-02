@@ -37,6 +37,7 @@ public class BrandCsvParser implements CsvEntityParser<Brand> {
             .foundedYear(foundedYear)
             .website(website)
             .description(description)
+            .deleted(false)
             .build();
     }
 }

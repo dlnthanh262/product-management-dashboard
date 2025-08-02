@@ -2,6 +2,7 @@ package com.dashboard.controller;
 
 import com.dashboard.model.Brand;
 import com.dashboard.repository.BrandRepository;
+import com.dashboard.repository.ProductRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,12 @@ class BrandControllerIntegrationTest {
     @Autowired
     private BrandRepository brandRepository;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     @BeforeEach
     void setUp() {
+        productRepository.deleteAll();
         brandRepository.deleteAll();
     }
 
