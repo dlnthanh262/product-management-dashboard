@@ -46,5 +46,5 @@ public class Product {
     private LocalDateTime updatedAt;
 
     @Column(name = "deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
-    private Boolean deleted;
+    private Boolean deleted = false;
 }

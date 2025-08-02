@@ -148,7 +148,7 @@ class BrandServiceTest {
     }
 
     @Test
-    void givenValidInputBrand_whenCreate_thenReturnCreatedBrand() {
+    void givenValidInput_whenCreate_thenReturnCreatedBrand() {
         when(brandRepository.existsByNameAndDeleted(Mockito.anyString(), Mockito.anyBoolean())).thenReturn(false);
         when(brandRepository.save(Mockito.any(Brand.class))).thenReturn(Brand.builder().id(VALID_ID).name(NAME).build());
 

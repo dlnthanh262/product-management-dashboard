@@ -16,7 +16,6 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
     Page<Brand> findByDeleted(boolean deleted, Pageable pageable);
     Optional<Brand> findByIdAndDeleted(Long id, Boolean deleted);
     Optional<Brand> findByNameAndDeleted(String name, Boolean deleted);
-    boolean existsByName(String name);
     boolean existsByNameAndDeleted(String name, Boolean deleted);
     @Transactional
     @Modifying
