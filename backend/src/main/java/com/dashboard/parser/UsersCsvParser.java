@@ -2,20 +2,20 @@ package com.dashboard.parser;
 
 import com.dashboard.exception.InvalidFormatException;
 import com.dashboard.exception.ValidationException;
-import com.dashboard.model.User;
+import com.dashboard.model.Users;
 import com.dashboard.model.UserRole;
-import com.dashboard.repository.UserRepository;
+import com.dashboard.repository.UsersRepository;
 import org.apache.commons.lang3.StringUtils;
-public class UserCsvParser implements CsvEntityParser<User>{
+public class UsersCsvParser implements CsvEntityParser<Users>{
 
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
 
-    public UserCsvParser(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UsersCsvParser(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
     }
 
     @Override
-    public User parse(String[] row) {
+    public Users parse(String[] row) {
         var expectedColumns = 3;
         if (row.length < expectedColumns) {
             throw new InvalidFormatException(String.format("Invalid user column number. Actual: %d, expected: %d", row.length, expectedColumns));
@@ -43,7 +43,7 @@ public class UserCsvParser implements CsvEntityParser<User>{
             throw new ValidationException("Invalid role: " + role);
         }
 
-        return User.builder()
+        return Users.builder()
             .username(username)
             .password(password)
             .role(userRole)
