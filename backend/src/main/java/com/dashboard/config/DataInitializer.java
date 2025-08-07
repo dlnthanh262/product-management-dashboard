@@ -3,8 +3,10 @@ package com.dashboard.config;
 import com.dashboard.parser.BrandCsvParser;
 import com.dashboard.parser.CsvEntityParser;
 import com.dashboard.parser.ProductCsvParser;
+import com.dashboard.parser.UserCsvParser;
 import com.dashboard.repository.BrandRepository;
 import com.dashboard.repository.ProductRepository;
+import com.dashboard.repository.UserRepository;
 import com.dashboard.util.CsvUtils;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -22,16 +24,20 @@ public class DataInitializer implements CommandLineRunner {
 
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
+    private final UserRepository userRepository;
     private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
 
     @Override
     public void run(String... args) {
         var brandCsvParser = new BrandCsvParser();
         var productCsvParser = new ProductCsvParser(brandRepository);
+        var userCsvParser = new UserCsvParser(userRepository);
         productRepository.deleteAll();
         brandRepository.deleteAll();
+        userRepository.deleteAll();
         insertRecordsFromCsvString("brand", "brands.csv", brandCsvParser, brandRepository);
         insertRecordsFromCsvString("product", "products.csv", productCsvParser, productRepository);
+        insertRecordsFromCsvString("user", "users.csv", userCsvParser, userRepository);
     }
 
     private <T, ID> void insertRecordsFromCsvString(

@@ -22,7 +22,12 @@ CREATE TABLE IF NOT EXISTS product (
     CONSTRAINT fk_brand FOREIGN KEY (brand_id) REFERENCES brand(id)
     );
 
--- INSERT INTO product (name, brand, quantity, price)
--- VALUES ('Aruba', 'ABW', 1960, 54922.00);
-
--- DELETE FROM product WHERE name='Aruba' AND brand='ABW';
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(30) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL,
+    role VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted BOOLEAN NOT NULL DEFAULT FALSE
+    );

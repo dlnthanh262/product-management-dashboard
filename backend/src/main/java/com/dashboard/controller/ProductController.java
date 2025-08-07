@@ -19,10 +19,14 @@ public class ProductController {
 
     // GET /api/products?deleted=false&page=0&size=10
     @GetMapping
-    public Page<ProductResponseDTO> getAll(
+    public Page<ProductResponseDTO> getFilteredProducts(
         @RequestParam(defaultValue = "false") boolean deleted,
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String brand,
+        @RequestParam(required = false) Double minPrice,
+        @RequestParam(required = false) Double maxPrice,
         Pageable pageable) {
-        return productService.getAllByDeleted(deleted, pageable);
+        return productService.getFilteredProducts(deleted, name, brand, minPrice, maxPrice, pageable);
     }
 
     // GET /api/products/{id}

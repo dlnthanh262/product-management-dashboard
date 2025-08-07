@@ -3,6 +3,7 @@ package com.dashboard.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
@@ -63,6 +64,11 @@ public class GlobalExceptionHandler {
         body.put("message", message);
         body.put("path", request.getRequestURI());
         return new ResponseEntity<>(body, status);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, ex, request);
     }
 
     @ExceptionHandler(Exception.class)

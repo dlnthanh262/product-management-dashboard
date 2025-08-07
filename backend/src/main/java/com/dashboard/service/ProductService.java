@@ -45,9 +45,18 @@ public class ProductService {
         }
     }
 
-    public Page<ProductResponseDTO> getAllByDeleted(boolean deleted, Pageable pageable) {
-        log.info("Fetching product with deleted = {}. Page {}, size {}", deleted, pageable.getPageNumber(), pageable.getPageSize());
-        return productRepository.findByDeleted(deleted, pageable)
+    public Page<ProductResponseDTO> getFilteredProducts(
+        boolean deleted,
+        String name,
+        String brand,
+        Double minPrice,
+        Double maxPrice,
+        Pageable pageable
+    ) {
+        log.info("Fetching product with deleted = {}. Page {}, size {}, name {}, brand {}, minPrice {}, maxPrice {}", deleted, pageable.getPageNumber(), pageable.getPageSize(), name, brand, minPrice, maxPrice);
+        name = (name == null) ? "" : name.trim();
+        brand = (brand == null) ? "" : brand.trim();
+        return productRepository.searchProducts(deleted, name, brand, minPrice, maxPrice, pageable)
             .map(this::mapToResponseDTO);
     }
 
