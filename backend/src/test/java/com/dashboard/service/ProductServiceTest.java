@@ -73,9 +73,9 @@ class ProductServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Product> productPage = new PageImpl<>(products);
 
-        when(productRepository.searchProducts(false, null, null, null, null, pageable)).thenReturn(productPage);
+        when(productRepository.searchProducts(false, "", "", null, null, pageable)).thenReturn(productPage);
 
-        var result = productService.getFilteredProducts(false, null, null, null, null, pageable);
+        var result = productService.getFilteredProducts(false, "", "", null, null, pageable);
 
         assertEquals(10, result.getNumberOfElements());
         assertEquals("ProductName1", result.getContent().get(0).getName());
@@ -88,9 +88,9 @@ class ProductServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Product> productPage = new PageImpl<>(products);
 
-        when(productRepository.searchProducts(false, null, null, null, null, pageable)).thenReturn(productPage);
+        when(productRepository.searchProducts(false, "", "", null, null, pageable)).thenReturn(productPage);
 
-        var results = productService.getFilteredProducts(false, null, null, null, null, pageable);
+        var results = productService.getFilteredProducts(false, "", "", null, null, pageable);
 
         assertEquals(0, results.getNumberOfElements());
     }
@@ -110,9 +110,9 @@ class ProductServiceTest {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Product> productPage = new PageImpl<>(products);
 
-        when(productRepository.searchProducts(true, null, null, null, null, pageable)).thenReturn(productPage);
+        when(productRepository.searchProducts(true, "", "", null, null, pageable)).thenReturn(productPage);
 
-        var results = productService.getFilteredProducts(true, null, null, null, null, pageable);
+        var results = productService.getFilteredProducts(true, "", "", null, null, pageable);
 
         assertEquals(10, results.getNumberOfElements());
         assertEquals("ProductName1", results.getContent().get(0).getName());

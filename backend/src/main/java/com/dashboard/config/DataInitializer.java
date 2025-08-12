@@ -31,7 +31,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         var brandCsvParser = new BrandCsvParser();
         var productCsvParser = new ProductCsvParser(brandRepository);
-        var userCsvParser = new UsersCsvParser(usersRepository);
+        var userCsvParser = new UsersCsvParser();
         productRepository.deleteAll();
         brandRepository.deleteAll();
         usersRepository.deleteAll();

@@ -4,15 +4,10 @@ import com.dashboard.exception.InvalidFormatException;
 import com.dashboard.exception.ValidationException;
 import com.dashboard.model.Users;
 import com.dashboard.model.UserRole;
-import com.dashboard.repository.UsersRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class UsersCsvParser implements CsvEntityParser<Users>{
-
-    private final UsersRepository usersRepository;
-
-    public UsersCsvParser(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
 
     @Override
     public Users parse(String[] row) {
@@ -43,9 +38,12 @@ public class UsersCsvParser implements CsvEntityParser<Users>{
             throw new ValidationException("Invalid role: " + role);
         }
 
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(password);
+
         return Users.builder()
             .username(username)
-            .password(password)
+            .password(encodedPassword)
             .role(userRole)
             .deleted(false)
             .build();

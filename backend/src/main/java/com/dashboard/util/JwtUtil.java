@@ -11,21 +11,25 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String SECRET_KEY = "secret-key";
+    private final String jwtSecret;
+
+    public JwtUtil(String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
 
     public String generateToken(UserDetails userDetails) {
         return Jwts.builder()
             .setSubject(userDetails.getUsername())
             .claim("role", userDetails.getAuthorities().iterator().next().getAuthority())
             .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 1 hour
-            .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256)
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+            .signWith(Keys.hmacShaKeyFor(jwtSecret.getBytes()), SignatureAlgorithm.HS256)
             .compact();
     }
 
     public String extractUsername(String token) {
         return Jwts.parserBuilder()
-            .setSigningKey(SECRET_KEY.getBytes())
+            .setSigningKey(jwtSecret.getBytes())
             .build()
             .parseClaimsJws(token)
             .getBody()

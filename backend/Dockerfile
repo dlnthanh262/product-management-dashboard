@@ -8,6 +8,5 @@ RUN mvn clean install -DskipTests
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
 COPY --from=build /app/target/product-backend-1.0.0.jar app.jar
-COPY src/main/resources/application.properties ./application.properties
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.config.location=file:./application.properties"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]

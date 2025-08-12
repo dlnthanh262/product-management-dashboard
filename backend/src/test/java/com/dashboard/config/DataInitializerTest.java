@@ -4,6 +4,7 @@ import com.dashboard.model.Brand;
 import com.dashboard.model.Product;
 import com.dashboard.repository.BrandRepository;
 import com.dashboard.repository.ProductRepository;
+import com.dashboard.repository.UsersRepository;
 import com.dashboard.util.CsvUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,12 +29,14 @@ class DataInitializerTest {
     private BrandRepository brandRepository;
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private UsersRepository usersRepository;
     private MockedStatic<CsvUtils> csvUtilsMock;
     private DataInitializer dataInitializer;
 
     @BeforeEach
     void setUp() {
-        dataInitializer = new DataInitializer(productRepository, brandRepository);
+        dataInitializer = new DataInitializer(productRepository, brandRepository, usersRepository);
         csvUtilsMock = mockStatic(CsvUtils.class);
     }
 
