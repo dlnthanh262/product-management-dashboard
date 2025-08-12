@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: IAM Role/User for Spring Boot to have permission to read AWS Secrets Manager
+
+Resources:
+  SpringBootSecretUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: springboot-secret-user
+
+  SpringBootSecretAccessKey:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      UserName: !Ref SpringBootSecretUser
+
+  SpringBootSecretPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: SpringBootSecretsManagerPolicy
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - secretsmanager:GetSecretValue
+            Resource: "*"
+      Users:
+        - !Ref SpringBootSecretUser
+
+Outputs:
+  AccessKeyId:
+    Description: Access Key ID
+    Value: !Ref SpringBootSecretAccessKey
+
+  SecretAccessKey:
+    Description: Secret Access Key
+    Value: !GetAtt SpringBootSecretAccessKey.SecretAccessKey
