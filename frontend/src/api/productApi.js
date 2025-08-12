@@ -3,6 +3,26 @@ import axios from 'axios';
 
 const BASE_URL = import.meta.env.API_BASE_URL || 'http://localhost:8080/api';
 
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export const login = async (username, password) => {
+  try {
+    const res = await axios.post(`${BASE_URL}/auth/login`, { username, password });
+    const token = res.data.token;
+    localStorage.setItem('token', token);
+    return token;
+  } catch (err) {
+    console.error('Login failed', err);
+    throw err;
+  }
+};
+
 export const getProducts = async ({
   page = 0,
   deleted = false,

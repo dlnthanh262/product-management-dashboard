@@ -1,14 +1,24 @@
-import { useState } from 'react'
-import './App.css'
-import Dashboard from './pages/Dashboard';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Dashboard from "./pages/Dashboard";
+import LoginPage from "./pages/Login";
 
 function App() {
+  const token = localStorage.getItem("token");
+
   return (
-    <div className="min-h-screen flex">
-      <div className="flex-[6]"><Dashboard /></div>
-      <div className="flex-[2] bg-gray-100 mt-4 mb-4"></div>
-    </div>
-  )
+    <Router>
+      <Routes>
+        <Route
+          path="/dashboard"
+          element={token ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        
+        <Route path="/login" element={<LoginPage />} />
+
+        <Route path="*" element={<Navigate to="/dashboard" />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;
