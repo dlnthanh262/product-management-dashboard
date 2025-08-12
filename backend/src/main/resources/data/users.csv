@@ -1,2 +1,3 @@
 username,password,role
-admin123,123456,ADMIN
+admin1,123456,ROLE_ADMIN
+user1,123456,ROLE_USER
