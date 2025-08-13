@@ -108,7 +108,7 @@ const Dashboard = () => {
             />
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+              className="rounded bg-green-600 px-4 py-2 mb-4 text-white hover:bg-green-700"
             >
               Create
             </button>
