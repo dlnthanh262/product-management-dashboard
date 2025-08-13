@@ -28,9 +28,7 @@ export default function Login() {
         setLoading(false);
       } else {
         localStorage.setItem("token", token);
-        setTimeout(() => {
-          navigate("/dashboard");
-        }, 500);
+        window.location.href = "/dashboard";
       }
     } catch (err) {
       setError("Invalid username or password");
