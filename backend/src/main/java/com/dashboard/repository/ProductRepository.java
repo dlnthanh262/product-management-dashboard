@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -42,4 +43,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
         @Param("maxPrice") Double maxPrice,
         Pageable pageable
     );
+
+    @Query("SELECT p.brand.name, COUNT(p) FROM Product p GROUP BY p.brand.name")
+    List<Object[]> countProductsGroupedByBrand();
 }

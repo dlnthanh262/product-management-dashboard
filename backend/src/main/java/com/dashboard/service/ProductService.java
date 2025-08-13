@@ -1,5 +1,6 @@
 package com.dashboard.service;
 
+import com.dashboard.dto.BrandProductCountDTO;
 import com.dashboard.dto.ProductRequestDTO;
 import com.dashboard.dto.ProductResponseDTO;
 import com.dashboard.exception.ConflictException;
@@ -14,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -130,6 +134,13 @@ public class ProductService {
 
         productRepository.setDeletedTrueById(product.getId());
         log.info("Product ID {} deleted", id);
+    }
+
+    public List<BrandProductCountDTO> getProductCountByBrand() {
+        List<Object[]> objects = productRepository.countProductsGroupedByBrand();
+        return objects.stream()
+            .map(object -> new BrandProductCountDTO((String) object[0], (Long) object[1]))
+            .collect(Collectors.toList());
     }
 
     private ProductResponseDTO mapToResponseDTO(Product product) {

@@ -1,5 +1,6 @@
 package com.dashboard.exception;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +69,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex, HttpServletRequest request) {
+        return buildResponse(HttpStatus.UNAUTHORIZED, ex, request);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Object> handleExpiredJwtException(ExpiredJwtException ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.UNAUTHORIZED, ex, request);
     }
 

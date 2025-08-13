@@ -1,5 +1,6 @@
 package com.dashboard.controller;
 
+import com.dashboard.dto.BrandProductCountDTO;
 import com.dashboard.dto.ProductRequestDTO;
 import com.dashboard.dto.ProductResponseDTO;
 import com.dashboard.service.ProductService;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,5 +57,10 @@ public class ProductController {
     public ResponseEntity<ProductResponseDTO> delete(@PathVariable Long id) {
         productService.markAsDeleted(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/statistics/by-brand")
+    public ResponseEntity<List<BrandProductCountDTO>> getProductCountByBrand() {
+        return ResponseEntity.ok(productService.getProductCountByBrand());
     }
 }
