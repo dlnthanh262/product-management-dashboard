@@ -22,7 +22,7 @@ const FilterBar = ({ brands, onFilterChange, onReset }) => {
 
     if (min !== null && max !== null && max < min) {
       alert("❌ Max price must be greater than or equal to Min price.");
-      handleReset(); // clear input luôn
+      handleReset(); 
       return;
     }
 
@@ -48,7 +48,7 @@ const FilterBar = ({ brands, onFilterChange, onReset }) => {
       <input
         type="text"
         placeholder="Search by name"
-        className="border px-3 py-2 rounded w-48"
+        className="border px-3 py-2 rounded w-48 foucus:border-black"
         value={name}
         onChange={(e) => setName(e.target.value)}
       />

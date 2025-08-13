@@ -1,7 +1,7 @@
 // src/api/productApi.js
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.API_BASE_URL || 'http://localhost:8080/api';
+const BASE_URL = "https://product-management-dashboard-ymvm.onrender.com/api";
 
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
@@ -62,4 +62,9 @@ export const updateProduct = async (id, product) => {
 
 export const deleteProduct = async (id) => {
   return await axios.delete(`${BASE_URL}/products/${id}`);
+};
+
+export const getProductStatisticsByBrand = async () => {
+  const res = await axios.get(`${BASE_URL}/products/statistics/by-brand`);
+  return res.data;
 };

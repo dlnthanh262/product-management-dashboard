@@ -3,5 +3,10 @@
 @tailwind utilities;
 
 body {
-  @apply bg-white text-black font-sans;
+  @apply bg-gray-50 text-black font-sans;
+}
+
+main {
+  max-width: 1440px;
+  margin: 0 auto;
 }

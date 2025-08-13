@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import LoginPage from "./pages/Login";
+import Login from "./pages/Login";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -13,7 +13,7 @@ function App() {
           element={token ? <Dashboard /> : <Navigate to="/login" />}
         />
         
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<Login />} />
 
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>

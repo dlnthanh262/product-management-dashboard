@@ -5,6 +5,7 @@ import FilterBar from "../components/FilterBar";
 import ProductCreateModal from "../components/ProductCreateModal";
 import { createProduct, updateProduct, deleteProduct } from "../api/productApi";
 import ProductDetailModal from "../components/ProductDetailModal";
+import ProductStatistics from "../components/ProductStatistics";
 
 const Dashboard = () => {
   const [brands, setBrands] = useState([]);
@@ -76,73 +77,100 @@ const Dashboard = () => {
     setIsDetailModalOpen(true);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+  };
+
   return (
-    <div className="p-4">
-      {/* Filter Bar + Create Button */}
-      <div className="flex justify-between items-center mb-4">
-        <FilterBar
-          brands={brands}
-          onFilterChange={handleFilterChange}
-          onReset={handleFilterReset}
-        />
-        <ProductCreateModal
-          isOpen={isCreateModalOpen}
-          onClose={() => setIsCreateModalOpen(false)}
-          onCreate={createProduct}
-          brandOptions={brands}
-        />
-        <ProductDetailModal
-          isOpen={isDetailModalOpen}
-          onClose={() => setIsDetailModalOpen(false)}
-          onEdit={updateProduct}
-          onDelete={deleteProduct}
-          product={selectedProduct}
-          brands = {brands}
-          refetch={fetchProducts}
-        />
-
+    <div className="flex flex-col min-h-screen">
+      {/* Header */}
+      <header className="bg-blue-600 text-white flex justify-between items-center px-6 py-3">
+        <h1 className="text-xl font-bold">Product Dashboard</h1>
         <button
-          onClick={() => setIsCreateModalOpen(true)}
-          className="rounded bg-green-600 px-4 py-2 text-white mb-4 hover:bg-green-700"
+          onClick={handleLogout}
+          className="bg-none hover:bg-white hover:text-black px-3 py-1 rounded"
         >
-          Create
+          Logout
         </button>
-      </div>
+      </header>
 
-      <ProductTable
-        products={products}
-        isLoading={isLoading}
-        onRowClick={handleRowClick}
-      />
+      {/* Main content */}
+      <main className="flex flex-1 p-4 gap-6 bg-gray-50">
 
-      {/* Pagination */}
-      <div className="flex justify-center items-center mt-4 gap-2">
-        <button
-          onClick={() => handlePageChange(page - 1)}
-          disabled={page === 0}
-          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-        >
-          Prev
-        </button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i}
-            onClick={() => handlePageChange(i)}
-            className={`px-3 py-1 rounded ${
-              page === i ? "bg-blue-500 text-white" : "bg-gray-100"
-            }`}
-          >
-            {i + 1}
-          </button>
-        ))}
-        <button
-          onClick={() => handlePageChange(page + 1)}
-          disabled={page === totalPages - 1}
-          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
-        >
-          Next
-        </button>
-      </div>
+        {/* Left: Products */}
+        <section className="flex-[5] flex flex-col bg-white rounded shadow p-4">
+          <div className="flex justify-between items-center mb-4">
+            <FilterBar
+              brands={brands}
+              onFilterChange={handleFilterChange}
+              onReset={handleFilterReset}
+            />
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+            >
+              Create
+            </button>
+            <ProductCreateModal
+              isOpen={isCreateModalOpen}
+              onClose={() => setIsCreateModalOpen(false)}
+              onCreate={createProduct}
+              brandOptions={brands}
+            />
+            <ProductDetailModal
+              isOpen={isDetailModalOpen}
+              onClose={() => setIsDetailModalOpen(false)}
+              onEdit={updateProduct}
+              onDelete={deleteProduct}
+              product={selectedProduct}
+              brands={brands}
+              refetch={fetchProducts}
+            />
+          </div>
+
+          <ProductTable
+            products={products}
+            isLoading={isLoading}
+            onRowClick={handleRowClick}
+          />
+
+          {/* Pagination */}
+          <div className="flex justify-center items-center mt-4 gap-2">
+            <button
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 0}
+              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+            >
+              Prev
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => handlePageChange(i)}
+                className={`px-3 py-1 rounded ${
+                  page === i ? "bg-blue-500 text-white" : "bg-gray-100"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => handlePageChange(page + 1)}
+              disabled={page === totalPages - 1}
+              className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        </section>
+
+        {/* Right: Statistics */}
+        <aside className="flex-[2] bg-white rounded shadow p-4">
+          <h2 className="text-xl font-bold mb-4">Product Statistics</h2>
+          <ProductStatistics />
+        </aside>
+      </main>
     </div>
   );
 };
