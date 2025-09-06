@@ -89,10 +89,10 @@ mvn spring-boot:run
 
 | Feature               | Status         |
 | --------------------- | -------------- |
-| 📦 Product CRUD         | 🚧 In Progress    |
-| 🔐 Auth (JWT)       |  ⏳ Not started   |
-| 📊 Dashboard & Charts |  ⏳ Not started   |
-| ☁️ Deployment         | ⏳ Not started |
+| 📦 Product CRUD         | ✅ Done    |
+| 🔐 Auth (JWT)       |  ✅ Done   |
+| 📊 Dashboard & Charts |  ✅ Done   |
+| ☁️ Deployment         | ✅ Done |
 
 ---
 
