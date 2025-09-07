@@ -44,14 +44,16 @@ export default function Login() {
         aria-label="Login form"
       >
         <h2 className="text-2xl font-bold mb-4">Product Dashboard</h2>
-
-        <p className="text-xs text-gray-500 mb-1" aria-live="polite">
+        <p className="text-sm text-gray-500 mb-1" aria-live="polite">
           Login account: <span className="font-mono">admin1</span>,{" "}
           <span className="font-mono">123456</span>
         </p>
-        <p className="text-xs text-gray-500 mb-4" aria-live="polite">
+        <p className="text-sm text-gray-500 mb-4" aria-live="polite">
           Test permission: <span className="font-mono">user1</span>,{" "}
           <span className="font-mono">123456</span>
+        </p>
+        <p className="text-xs text-blue-500 mb-4" aria-live="polite">
+          After submit Login, please wait about a minute then refresh the site before the database becomes active
         </p>
 
         {error && (
